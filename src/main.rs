@@ -29,6 +29,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             InputBundle::<StringBindings>::new().with_bindings_from_file(bindings_config_path)?,
         )?
+        .with_bundle(TransformBundle::new())?
         .with_bundle(UiBundle::<StringBindings>::new())?
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
@@ -41,7 +42,6 @@ fn main() -> amethyst::Result<()> {
                 .with_plugin(RenderFlat2D::default())
                 .with_plugin(RenderUi::default()),
         )?
-        .with_bundle(TransformBundle::new())?
         .with(PauseSystem, "pause_system", &[])
         .with(PaddleSystem, "paddle_system", &["input_system"])
         .with(BallSystem, "ball_system", &[])

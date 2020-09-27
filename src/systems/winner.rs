@@ -5,7 +5,9 @@ use amethyst::{
     ui::UiText,
 };
 
-use crate::pong::{Ball, ScoreBoard, ScoreText, ARENA_HEIGHT, ARENA_WIDTH};
+use crate::pong::{
+    Ball, ScoreBoard, ScoreText, ARENA_HEIGHT, ARENA_WIDTH, SLOW_BALL_VELOCITY_X_FACTOR,
+};
 
 #[derive(SystemDesc)]
 pub struct WinnerSystem;
@@ -47,7 +49,8 @@ impl<'s> System<'s> for WinnerSystem {
             };
 
             if did_score {
-                ball.velocity[0] = -ball.velocity[0]; // Reverse Direction
+                ball.velocity[0] *= -1. * SLOW_BALL_VELOCITY_X_FACTOR; // Reverse Direction
+                ball.velocity[1] *= SLOW_BALL_VELOCITY_X_FACTOR; // Reverse Direction
                 transform.set_translation_x(ARENA_WIDTH / 2.0); // Reset Position
                 transform.set_translation_y(ARENA_HEIGHT / 2.0); // Reset Position
 

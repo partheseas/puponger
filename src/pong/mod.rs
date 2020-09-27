@@ -14,6 +14,7 @@ pub const PADDLE_HEIGHT: f32 = 16.0;
 pub const PADDLE_WIDTH: f32 = 4.0;
 
 pub const BALL_VELOCITY_X: f32 = 75.0;
+pub const SLOW_BALL_VELOCITY_X_FACTOR: f32 = 0.3;
 pub const BALL_VELOCITY_Y: f32 = 50.0;
 pub const BALL_RADIUS: f32 = 2.0;
 
@@ -82,7 +83,7 @@ pub struct ScoreText {
 
 #[derive(Default)]
 pub struct Pong {
-    pub ball_spawn_timer: Option<f32>,
+    ball_spawn_timer: Option<f32>,
     sprites: Option<Handle<SpriteSheet>>,
 }
 
@@ -91,7 +92,7 @@ impl SimpleState for Pong {
         let world = data.world;
 
         // Wait one second before spawning the ball.
-        self.ball_spawn_timer.replace(2.0);
+        self.ball_spawn_timer.replace(2.);
 
         self.sprites.replace(load_sprite_sheet(world));
 
@@ -107,7 +108,7 @@ impl SimpleState for Pong {
                 let time = data.world.fetch::<Time>();
                 timer -= time.delta_seconds();
             }
-            if timer <= 0.0 {
+            if timer <= 0. {
                 // When timer expire, spawn the ball
                 init_ball(data.world, self.sprites.clone().unwrap());
             } else {
