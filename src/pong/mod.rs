@@ -68,6 +68,12 @@ pub struct ScoreBoard {
     pub score_right: i32,
 }
 
+#[derive(Default)]
+pub struct Pause {
+    pub changed_last_frame: bool,
+    pub paused: bool,
+}
+
 /// ScoreText contains the ui text components that display the score
 pub struct ScoreText {
     pub p1_score: Entity,

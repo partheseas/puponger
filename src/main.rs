@@ -41,6 +41,7 @@ fn main() -> amethyst::Result<()> {
                 .with_plugin(RenderFlat2D::default()), // .with_plugin(RenderUi::default()),
         )?
         .with_bundle(TransformBundle::new())?
+        .with(PauseSystem, "pause_system", &[])
         .with(PaddleSystem, "paddle_system", &["input_system"])
         .with(BallSystem, "ball_system", &[])
         .with(
