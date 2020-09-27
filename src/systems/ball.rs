@@ -14,12 +14,11 @@ impl<'s> System<'s> for BallSystem {
     type SystemData = (
         ReadStorage<'s, Ball>,
         WriteStorage<'s, Transform>,
-        Read<'s, InputHandler<StringBindings>>,
         Read<'s, Pause>,
         Read<'s, Time>,
     );
 
-    fn run(&mut self, (balls, mut translations, input, mut pause, time): Self::SystemData) {
+    fn run(&mut self, (balls, mut translations, pause, time): Self::SystemData) {
         // Move every ball according to its speed, and the time passed.
         if !pause.paused {
             for (ball, translation) in (&balls, &mut translations).join() {

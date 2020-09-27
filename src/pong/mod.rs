@@ -89,13 +89,14 @@ pub struct Pong {
 impl SimpleState for Pong {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
+
         // Wait one second before spawning the ball.
         self.ball_spawn_timer.replace(2.0);
 
         self.sprites.replace(load_sprite_sheet(world));
 
         init_paddles(world, self.sprites.clone().unwrap());
-        // init_scoreboard(world);
+        init_scoreboard(world);
         init_camera(world);
     }
 
@@ -122,8 +123,8 @@ fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
     // Load the sprite sheet necessary to render the graphics.
     // The texture is the pixel data
     // `texture_handle` is a cloneable reference to the texture
+    let loader = world.read_resource::<Loader>();
     let texture_handle = {
-        let loader = world.read_resource::<Loader>();
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         loader.load(
             "textures/pong_spritesheet.png",
@@ -133,7 +134,6 @@ fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
         )
     };
 
-    let loader = world.read_resource::<Loader>();
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
         "textures/pong_spritesheet.ron", // Here we load the associated ron file
