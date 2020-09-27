@@ -1,7 +1,9 @@
+mod audio;
 mod pong;
 mod systems;
 
 use amethyst::{
+    audio::{AudioBundle, DjSystemDesc},
     core::transform::TransformBundle,
     input::{InputBundle, StringBindings},
     prelude::*,
@@ -13,6 +15,7 @@ use amethyst::{
     ui::{RenderUi, UiBundle},
     utils::application_root_dir,
 };
+use audio::Music;
 use pong::Pong;
 use systems::*;
 
@@ -31,6 +34,7 @@ fn main() -> amethyst::Result<()> {
         )?
         .with_bundle(TransformBundle::new())?
         .with_bundle(UiBundle::<StringBindings>::new())?
+        .with_bundle(AudioBundle::default())?
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
                 // The RenderToWindow plugin provides all the scaffolding for opening a window and drawing on it
@@ -50,7 +54,12 @@ fn main() -> amethyst::Result<()> {
             "bounce_system",
             &["paddle_system", "ball_system"],
         )
-        .with(WinnerSystem, "winner_system", &["ball_system"]);
+        .with(WinnerSystem, "winner_system", &["ball_system"])
+        .with_system_desc(
+            DjSystemDesc::new(|music: &mut Music| music.music.next()),
+            "dj_system",
+            &[],
+        );
 
     let mut game = Application::new(assets_dir, Pong::default(), game_data)?;
     game.run();
